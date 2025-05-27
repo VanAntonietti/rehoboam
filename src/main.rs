@@ -41,8 +41,8 @@ impl App {
     }
 
     fn draw(&self, frame: &mut Frame) {
-        //frame.render_widget(self, frame.area());
-        frame.render_widget(self.draw_ball(), frame.area());
+        frame.render_widget(self, frame.area());
+        //frame.render_widget(self.draw_ball(), frame.area());
     }
 
     fn handle_events(&mut self) -> io::Result<()> {
@@ -72,7 +72,7 @@ impl App {
     }
 }
 
-/* impl Widget for &App {
+impl Widget for &App {
     fn render(self, area: Rect, buf: &mut Buffer) {
         let title = Line::from(" Rehoboam divergent circle ".bold());
         let block = Block::bordered()
@@ -83,7 +83,7 @@ impl App {
             .block(block)
             .render(area, buf);
     }
-}*/
+}
 
 fn main() -> io::Result<()> {
     let mut terminal = ratatui::init();
