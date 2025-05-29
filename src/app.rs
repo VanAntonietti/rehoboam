@@ -1,3 +1,4 @@
+use crate::layout::{self, draw_layout};
 use crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind};
 use ratatui::{
     DefaultTerminal, Frame,
@@ -15,23 +16,10 @@ use std::io;
 
 #[derive(Debug, Default)]
 pub struct App {
-    ball: Circle,
     exit: bool,
 }
 
 impl App {
-    const fn new() -> Self {
-        Self {
-            exit: false,
-            ball: Circle {
-                x: 80.00,
-                y: 80.00,
-                radius: 40.00,
-                color: Color::LightBlue,
-            },
-        }
-    }
-
     pub fn run(&mut self, terminal: &mut DefaultTerminal) -> io::Result<()> {
         while !self.exit {
             terminal.draw(|frame| self.draw(frame))?;
@@ -42,6 +30,8 @@ impl App {
 
     fn draw(&self, frame: &mut Frame) {
         frame.render_widget(self, frame.area());
+        let layout = draw_layout(self, self, frame.area());
+        frame.render_widget(layout, area);
         //frame.render_widget(self.draw_ball(), frame.area());
     }
 
@@ -64,12 +54,6 @@ impl App {
     fn exit(&mut self) {
         self.exit = true;
     }
-
-    fn draw_ball(&self) -> impl Widget + '_ {
-        Canvas::default().paint(|ctx| {
-            ctx.draw(&self.ball);
-        })
-    }
 }
 
 impl Widget for &App {
@@ -87,7 +71,7 @@ impl Widget for &App {
 
 pub fn run() -> io::Result<()> {
     let mut terminal = ratatui::init();
-    let app_result = App::new().run(&mut terminal);
+    let app_result = App::default().run(&mut terminal);
     ratatui::restore();
     app_result
 }
