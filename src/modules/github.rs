@@ -1,6 +1,6 @@
 use dotenvy::dotenv;
-use reqwest::Client;
-use serde::Serialize;
+use reqwest::{Client, header};
+use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::env;
 use std::error::Error;
@@ -17,7 +17,7 @@ struct Variables {
     user_name: String,
 }
 
-pub async fn fetch_contributions(username: String, token: String) -> Result<Value, Box<dyn Error>> {
+pub async fn fetch_contributions(username: &str, token: &str) -> Result<Value, Box<dyn Error>> {
     let client = Client::new();
     let query = r#"
         query($userName: String!) { 
@@ -44,11 +44,19 @@ pub async fn fetch_contributions(username: String, token: String) -> Result<Valu
     };
     let response = client
         .post("https://api.github.com/graphql")
+        .header(header::USER_AGENT, "RehoboamRustGithubClient/1.0")
         .bearer_auth(token)
         .json(&payload)
         .send()
         .await?;
-    let json: Value = response.json().await?;
+    let status = response.status();
+    let body = response.text().await?;
+    println!("Status: {}", status);
+    println!("Raw response body: {}", body);
+    if !status.is_success() {
+        return Err(format!("API error: Status{}, Body: {}", status, body).into());
+    }
+    let json: Value = serde_json::from_str(&body)?;
     Ok(json)
 }
 
@@ -56,8 +64,7 @@ pub async fn github_layout() -> Result<(), Box<dyn Error>> {
     dotenv().ok();
     let username = env::var("GITHUB_NAME")?;
     let token = env::var("GITHUB_TOKEN")?;
-
-    let result = fetch_contributions(username, token).await?;
+    let result = fetch_contributions(&username, &token).await?;
     println!("Raw Json: {}", result);
     Ok(())
 }
