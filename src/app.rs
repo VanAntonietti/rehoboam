@@ -1,16 +1,13 @@
-use crate::layout::{self, draw_layout};
+use crate::layout;
 use crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind};
 use ratatui::{
     DefaultTerminal, Frame,
     buffer::Buffer,
     layout::Rect,
-    style::{Color, Stylize},
+    style::Stylize,
     symbols::border,
     text::Line,
-    widgets::{
-        Block, Paragraph, Widget,
-        canvas::{Canvas, Circle},
-    },
+    widgets::{Block, Paragraph, Widget},
 };
 use std::io;
 
@@ -30,9 +27,7 @@ impl App {
 
     fn draw(&self, frame: &mut Frame) {
         frame.render_widget(self, frame.area());
-        let layout = draw_layout(self, self, frame.area());
-        frame.render_widget(layout, area);
-        //frame.render_widget(self.draw_ball(), frame.area());
+        layout::draw_layout(frame, frame.area());
     }
 
     fn handle_events(&mut self) -> io::Result<()> {

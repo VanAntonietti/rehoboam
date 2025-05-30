@@ -1,5 +1,4 @@
-mod app;
-mod modules;
+use rehoboam::{app, layout, modules};
 use std::io;
 
 #[tokio::main]

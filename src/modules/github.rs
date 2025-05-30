@@ -1,6 +1,9 @@
 use dotenvy::dotenv;
+use ratatui::Frame;
+use ratatui::layout::Rect;
+use ratatui::widgets::Block;
 use reqwest::{Client, header};
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 use serde_json::Value;
 use std::env;
 use std::error::Error;
@@ -67,4 +70,17 @@ pub async fn github_layout() -> Result<(), Box<dyn Error>> {
     let result = fetch_contributions(&username, &token).await?;
     println!("Raw Json: {}", result);
     Ok(())
+}
+
+pub fn github_draw(frame: &mut Frame, area: Rect) {
+    /*let chunks = Layout::vertical([
+        Constraint::Length(2),
+        Constraint::Length(3),
+        Constraint::Length(2),
+    ])
+    .margin(1)
+    .split(area);
+    */
+    let block = Block::bordered().title("Graphs");
+    frame.render_widget(block, area);
 }
