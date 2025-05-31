@@ -1,3 +1,4 @@
+use rehoboam::{app, layout, modules};
 use std::{cell::RefCell, io, rc::Rc};
 
 use ratatui::{
