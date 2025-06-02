@@ -10,3 +10,4 @@ pub fn startin_up_effect() -> Effect {
     todo!()
     fx::parallel(&effects)
 }
+  c
