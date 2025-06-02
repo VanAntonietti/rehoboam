@@ -1,7 +1,7 @@
 use app::App;
 use ratatui::Terminal;
 use ratzilla::{DomBackend, WebRenderer};
-use rehoboam::{app, layout, modules};
+use rehoboam::{app, effect, layout, modules};
 use std::{io, rc::Rc};
 
 fn main() -> io::Result<()> {
@@ -14,4 +14,3 @@ fn main() -> io::Result<()> {
     });
     Ok(())
 }
-
