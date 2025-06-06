@@ -1,3 +1,4 @@
+use crate::color::{self, Catppuccin};
 use ratzilla::ratatui::{
     layout::{Constraint, Direction, Layout, Rect},
     style::{Color, Stylize},
@@ -23,7 +24,7 @@ impl Default for AppState {
             sections: [
                 SectionState {
                     title: "About Me".to_string(),
-                    content: "Software Enfineer".to_string(),
+                    content: "Software Engineer".to_string(),
                     animation_progress: 0.0,
                     is_focused: false,
                 },
@@ -95,18 +96,19 @@ impl StatefulWidget for SectionWidget {
     type State = SectionState;
 
     fn render(self, area: Rect, buf: &mut ratatui::buffer::Buffer, state: &mut Self::State) {
+        let catppuccin = Catppuccin::new();
         let block = Block::bordered()
             .title(state.title.clone())
             .border_type(BorderType::Rounded)
             .border_style(if state.is_focused {
-                ratatui::style::Style::default().fg(Color::Yellow)
+                ratatui::style::Style::default().fg(catppuccin.surface0)
             } else {
-                ratatui::style::Style::default().fg(Color::White)
+                ratatui::style::Style::default().fg(catppuccin.overlay2)
             });
         let paragraph = Paragraph::new(state.content.clone())
             .block(block)
-            .fg(Color::White)
-            .bg(Color::Black);
+            .fg(catppuccin.lavender)
+            .bg(catppuccin.mantle);
 
         paragraph.render(area, buf);
     }

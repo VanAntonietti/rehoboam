@@ -2,6 +2,7 @@ mod app;
 use app::{App, AppState};
 use ratzilla::ratatui::Terminal;
 use ratzilla::{DomBackend, WebRenderer};
+use rehoboam::color;
 use std::{cell::RefCell, io, rc::Rc};
 
 fn main() -> io::Result<()> {
