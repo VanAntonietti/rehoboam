@@ -1,10 +1,12 @@
-use crate::color::{self, Catppuccin};
+use crate::color::Catppuccin;
+use crate::effect::startup_effect;
 use ratzilla::ratatui::{
     layout::{Constraint, Direction, Layout, Rect},
-    style::{Color, Stylize},
+    style::Stylize,
     widgets::{Block, BorderType, Paragraph, StatefulWidget, Widget},
     Frame,
 };
+use tachyonfx::{Duration, Shader};
 
 pub struct AppState {
     pub sections: [SectionState; 5],
@@ -110,6 +112,14 @@ impl StatefulWidget for SectionWidget {
             .fg(catppuccin.lavender)
             .bg(catppuccin.mantle);
 
+        let mut effect = startup_effect();
+        effect.process(
+            Duration {
+                milliseconds: (300),
+            },
+            buf,
+            area,
+        );
         paragraph.render(area, buf);
     }
 }

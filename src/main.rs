@@ -1,7 +1,6 @@
-mod app;
-use app::{App, AppState};
 use ratzilla::ratatui::Terminal;
 use ratzilla::{DomBackend, WebRenderer};
+use rehoboam::app::{App, AppState};
 use rehoboam::color;
 use std::{cell::RefCell, io, rc::Rc};
 
@@ -16,7 +15,7 @@ fn main() -> io::Result<()> {
     terminal.draw_web(move |frame| {
         let mut state = render_state.borrow_mut();
         state.update(0.016);
-        app.render(frame, &mut *state);
+        app.render(frame, &mut state);
     });
     Ok(())
 }
