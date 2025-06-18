@@ -13,3 +13,8 @@ impl UiState {
         }
     }
 }
+
+pub fn start_ui() -> UiState {
+    let mut ui = UiState::new();
+    ui
+}
